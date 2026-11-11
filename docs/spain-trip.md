@@ -58,7 +58,9 @@ Increment `CURRENT_PROJECT_VERSION` in the generator before subsequent uploads a
 
 ## Current release
 
-**1.0 (2)** is valid and in internal beta testing as of November 11, 2026. Build ID `64463451-2afe-4a9d-ba8b-6e2d15f1c847`; assigned to Personal Testing. The owner installation invitation was sent. Expiry: February 9, 2027. Source commit: `e3bf0a8`. Build 1 failed purpose-string validation; build 2 corrected it.
+**1.0 (4)** is valid as of November 11, 2026. Build ID `857600b9-a4bd-4c99-81c5-d26b8bd27c55`; assigned to Personal Testing. App source commit: `eb118af`.
+
+Update through TestFlight without uninstalling to retain the saved API key. Connect to Wi-Fi for the initial Spanish recognizer-model download, tap **Tap to talk**, and wait for setup to finish. Model download uses Apple's servers; microphone audio remains local. This release also corrects the **Practice** menu label. A real spoken retest on the owner's iPhone 18 Pro / iOS 27.2 is pending.
 
 ## First iPhone check
 
