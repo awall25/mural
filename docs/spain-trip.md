@@ -60,9 +60,9 @@ Increment `CURRENT_PROJECT_VERSION` in the generator before subsequent uploads a
 
 ## Current release
 
-**1.0 (4)** is valid as of November 11, 2026. Build ID `857600b9-a4bd-4c99-81c5-d26b8bd27c55`; assigned to Personal Testing. App source commit: `eb118af`.
+**1.0 (5)** is valid and in internal beta testing as of November 11, 2026. Build ID `76d70779-a47a-48c8-b30d-109f6be6619f`; assigned to Personal Testing. App source commit: `c4e307f`.
 
-Update through TestFlight without uninstalling to retain the saved API key. Connect to Wi-Fi for the initial Spanish recognizer-model download, tap **Tap to talk**, and wait for setup to finish. Model download uses Apple's servers; microphone audio remains local. This release also corrects the **Practice** menu label. A real spoken retest on the owner's iPhone 18 Pro / iOS 27.2 is pending.
+This update introduces 26 structured tasks, per-attempt feedback, retries and hints, app-controlled ordered completion, and a visible app icon. Update through TestFlight and start a scenario. Saved keys and older conversations are retained. The existing on-device SpeechAnalyzer setup remains in place; the initial Spanish-model download uses Apple's servers, while microphone audio stays local.
 
 ## First iPhone check
 
