@@ -41,3 +41,6 @@ apps/android/local.properties
 apps/android/.idea/
 *.jks
 *.keystore
+
+# Personal App Store Connect configuration
+.asc/
