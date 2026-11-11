@@ -1,0 +1,72 @@
+# Spain Trip personal fork
+
+## What is implemented
+
+The iOS entry point launches `SpainRootView`, independent of Mural's live coordinator. Eight bundled scenarios cover restaurants, cafés, hotels, taxis/rideshare pickup, trains, directions, chatting with locals and conversation repair. There are 39 offline phrases, searchable in English/Spanish, with saved phrases and normal/slower `es-ES` device speech. Places, times and prices used by the model are fictional exercises.
+
+Speech uses Apple's on-device recognition with `requiresOnDeviceRecognition = true`, gated by `supportsOnDeviceRecognition` and availability. Tap to start, tap to finish (30-second maximum), edit the transcript, then Send. Permission denial or unavailable recognition leaves typing available; there is no cloud recognition fallback. Backgrounding, interruptions and navigation stop recording/playback. Downloaded Spanish voice/speech resources and physical-device checks remain important.
+
+A Send uses the existing ephemeral, redirect-rejecting API transport with a personal Keychain key and explicit text-processing consent. The request uses the Responses API, `gpt-4.1-mini`, `store: false`, a strict output schema and 500 maximum output tokens. The model returns Spanish, English meaning, concise feedback and goal completion in one call. There are no web tools, automatic translations, live sessions or additional assessment calls in this flow.
+
+Context includes the scenario's original opening, at most six recent exchanges, and the latest user reply (1–600 characters). Scenarios stop after goal completion or 12 turns. The app permits at most 80 request attempts per device-local calendar day. This is a convenience guard, not an account-level billing cap; cancellations can still incur provider charges. Settings shows token counts received in completed responses. These totals may omit cancelled requests.
+
+Practice transcripts and completion markers live in UserDefaults, bounded to the latest 24 conversations. Keys and raw audio are never included. Settings can delete practice, revoke consent and remove the key. A corrupt journal is retained rather than overwritten; saved practice must be explicitly deleted to restore persistent recording of new sessions.
+
+## Development
+
+- Xcode project: `apps/ios/Mural.xcodeproj`; scheme: `Mural`.
+- Display name: Spain Trip; bundle: `com.awall25.spaintrip`.
+- Minimum iOS: 26.1; iPhone only.
+- Team: `L484ETZTGA`, reused from Finbot's setup with permission. Money Bot source/configuration is not modified.
+- Managed Mural service, account providers and purchases are disabled. No backend deployment is necessary.
+- The original live implementation remains compiled as upstream reference but is not reachable from the travel root. Android is unchanged and does not include these features.
+
+```
+swift test --package-path apps/ios
+python3 -m unittest discover -s scripts/tests -t .
+python3 scripts/generate_project.py
+```
+
+The project generator uses `TravelUITests.swift` for this fork's native tests. Upstream `MuralUITests.swift` remains as reference for the original interface. The core and script suites retain upstream coverage. New core tests cover bounded context, input/session limits, provider output validation and requested travel content. UI tests cover offline launch, hotel selection, offline phrase search, empty progress and the consent/key gate before any network request.
+
+## Signing and TestFlight
+
+App Store Connect record: **Spain Trip Practice**, ID **6833642049**.
+
+- Bundle registration: `RHWWH4Q7K5`.
+- Distribution profile: **Spain Trip App Store Distribution**, ID `A45Z828N5X`.
+- Existing Apple Distribution certificate: `FR6GUXS4UH`.
+- Internal group: **Personal Testing**, ID `f1340caa-5bd1-4fc3-8df4-b1bd9b0d1e2e`.
+- `.asc/` contains ignored local ASC configuration and build artifacts. It references the existing private key by path; no private key is copied into source control.
+- `scripts/prepare-spain-signing.py` is copied from Finbot's signing helper. It unlocks the existing dedicated distribution keychain using its existing owner-only password file, without changing Money Bot files.
+- App-specific manual Release signing is set in `scripts/generate_project.py`; Debug remains automatic.
+- `apps/ios/ExportOptions.plist` selects only Spain Trip's new profile. Never reuse Finbot's provisioning profile for this bundle.
+
+```
+python3 scripts/prepare-spain-signing.py
+xcodebuild -project apps/ios/Mural.xcodeproj -scheme Mural -configuration Release \
+  -destination 'generic/platform=iOS' -derivedDataPath .build/DerivedData \
+  -archivePath .asc/SpainTrip.xcarchive archive
+xcodebuild -exportArchive -archivePath .asc/SpainTrip.xcarchive \
+  -exportOptionsPlist apps/ios/ExportOptions.plist -exportPath .asc/export
+python3 scripts/verify-spain-ipa.py .asc/export/Mural.ipa BUILD_NUMBER
+asc publish testflight --app 6833642049 --ipa .asc/export/Mural.ipa \
+  --group f1340caa-5bd1-4fc3-8df4-b1bd9b0d1e2e --wait
+```
+
+Increment `CURRENT_PROJECT_VERSION` in the generator before subsequent uploads and regenerate the project. Use a fresh archive/export directory per release. The package verification script checks signature, bundle, version/build, permissions (including the camera purpose declaration required by the retained WebRTC binary), device family, disabled hosted settings and distribution entitlements. No push entitlement is needed for this app.
+
+## First iPhone check
+
+1. Install Spain Trip in TestFlight. Phrasebook should open without a key or internet.
+2. In Settings, enter an OpenAI project key directly and enable text processing. Never paste it into chat or commit it.
+3. Choose a situation, tap to talk, grant microphone/speech permissions, and speak a brief Spanish reply. Review and edit the transcript before Send.
+4. Verify normal/slower playback, then send one reply and inspect the Spanish, optional English and feedback. Check billing in the OpenAI project.
+5. Try rehearsal without meanings, revisit Progress, and test recording interruption/backgrounding. Check speaker and headphones.
+6. In airplane mode, verify phrase search, saved phrases and installed-voice playback. AI conversation requires internet.
+
+Simulator tests do not establish Spanish recognition accuracy, pronunciation quality, teaching effectiveness or real API access. A real spoken conversation is still needed.
+
+## Scope
+
+This is a personal travel refresher, not a general-language curriculum, real-time translator, itinerary service or booking tool. No App Store public release or external tester invitations are configured. MIT license and upstream notices are retained; the geometric Spain Trip icon is original and reproducible with `scripts/draw_spain_icon.swift`.

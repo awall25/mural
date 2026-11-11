@@ -1,3 +1,24 @@
+# Spain Trip — personal Mural fork
+
+A Spanish-from-Spain travel refresher for restaurants, cafés, hotels, taxis, trains, directions, chatting with locals and asking for clarification.
+
+## This fork
+
+- **Economical push-to-talk:** tap to record, tap to finish, review the transcript, then Send. Spanish speech recognition stays on the phone; unsupported devices offer typing instead of silently using cloud recognition.
+- **One text request per Send:** `gpt-4.1-mini`, 500 output tokens maximum, the latest six exchanges, 600-character user replies, 12 turns per scenario and 80 requests per local calendar day. No live sessions, automatic searches or separate translation requests.
+- **Offline phrasebook:** 39 bundled phrases with English meanings, normal/slower Spain Spanish device speech, search and saved phrases. Installed speech resources are required for playback.
+- **Practice and rehearsal:** optional English meanings, short corrections during practice, feedback at goal completion during rehearsal.
+- **Local progress:** the latest 24 conversations and completed-situation markers. No proficiency certification or pronunciation scoring.
+- **Personal key:** enter it only in the app Settings; it stays in Keychain. Consent is required before text is sent to OpenAI. No Mural account, purchases or backend deployment is needed.
+
+Build `apps/ios/Mural.xcodeproj`, scheme **Mural**, using Xcode 26.1+ and an iPhone with iOS 26.1+. Bundle identifier: `com.awall25.spaintrip`. Display name: **Spain Trip**. Project/scheme names remain Mural to keep upstream tooling compatible.
+
+See [Spain Trip setup and TestFlight](docs/spain-trip.md) for signing and verification. The original Mural implementation remains in the repository for reference; this fork launches the Spain travel interface and does not initialize the original live coordinator. Android remains upstream Mural and has not been adapted.
+
+---
+
+## Upstream Mural README
+
 # Mural
 
 **The language app you eventually delete.**

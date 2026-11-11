@@ -40,7 +40,7 @@ privacy = add('privacy','PBXFileReference',lastKnownFileType='text.xml',path='Ap
 refs.append(privacy)
 signing = add('signing','PBXFileReference',lastKnownFileType='text.xcconfig',path='Config/Signing.xcconfig',sourceTree='<group>')
 refs.append(signing)
-testSource = add('testSource','PBXFileReference',lastKnownFileType='sourcecode.swift',path='UITests/MuralUITests.swift',sourceTree='<group>')
+testSource = add('testSource','PBXFileReference',lastKnownFileType='sourcecode.swift',path='UITests/TravelUITests.swift',sourceTree='<group>')
 refs.append(testSource)
 product = add('product','PBXFileReference',explicitFileType='wrapper.application',path='Mural.app',sourceTree='BUILT_PRODUCTS_DIR')
 testProduct = add('testProduct','PBXFileReference',explicitFileType='wrapper.cfbundle',path='MuralUITests.xctest',sourceTree='BUILT_PRODUCTS_DIR')
@@ -54,7 +54,7 @@ frameworks = add('frameworks','PBXFrameworksBuildPhase',buildActionMask=21474836
 sourcePhase = add('sources','PBXSourcesBuildPhase',buildActionMask=2147483647,files=sources,runOnlyForDeploymentPostprocessing=0)
 resources = add('resources','PBXResourcesBuildPhase',buildActionMask=2147483647,files=[add('assetsBuild','PBXBuildFile',fileRef=asset),add('noticesBuild','PBXBuildFile',fileRef=notices),add('privacyBuild','PBXBuildFile',fileRef=privacy)],runOnlyForDeploymentPostprocessing=0)
 common = {'SDKROOT':'iphoneos','IPHONEOS_DEPLOYMENT_TARGET':'26.1','SWIFT_VERSION':'5.0','CLANG_ENABLE_MODULES':'YES','CLANG_ENABLE_OBJC_ARC':'YES','SWIFT_STRICT_CONCURRENCY':'targeted'}
-targetSettings = {'PRODUCT_BUNDLE_IDENTIFIER':'chat.mural.ios','PRODUCT_NAME':'$(TARGET_NAME)','TARGETED_DEVICE_FAMILY':'1','GENERATE_INFOPLIST_FILE':'NO','INFOPLIST_FILE':'App/Info.plist','CODE_SIGN_STYLE':'Automatic','DEVELOPMENT_TEAM':'8PZYNMS6FH','MARKETING_VERSION':'1.0','CURRENT_PROJECT_VERSION':'4','ASSETCATALOG_COMPILER_APPICON_NAME':'AppIcon','ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME':'AccentColor','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks'],'ENABLE_PREVIEWS':'YES','SUPPORTED_PLATFORMS':'iphoneos iphonesimulator'}
+targetSettings = {'PRODUCT_BUNDLE_IDENTIFIER':'com.awall25.spaintrip','PRODUCT_NAME':'$(TARGET_NAME)','TARGETED_DEVICE_FAMILY':'1','GENERATE_INFOPLIST_FILE':'NO','INFOPLIST_FILE':'App/Info.plist','CODE_SIGN_STYLE':'Automatic','DEVELOPMENT_TEAM':'L484ETZTGA','MARKETING_VERSION':'1.0','CURRENT_PROJECT_VERSION':'2','ASSETCATALOG_COMPILER_APPICON_NAME':'AppIcon','ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME':'AccentColor','LD_RUNPATH_SEARCH_PATHS':['$(inherited)','@executable_path/Frameworks'],'ENABLE_PREVIEWS':'YES','SUPPORTED_PLATFORMS':'iphoneos iphonesimulator'}
 targetSettings.update({'CODE_SIGN_ENTITLEMENTS':'$(MURAL_APPLE_ENTITLEMENTS)',
                       'SWIFT_ACTIVE_COMPILATION_CONDITIONS':'$(inherited) $(MURAL_APPLE_SWIFT_FLAGS)'})
 def configs(prefix, settings):
@@ -64,6 +64,8 @@ def configs(prefix, settings):
         if prefix=='project':
             s.update({'SWIFT_OPTIMIZATION_LEVEL':'-Onone' if name=='Debug' else '-O','DEBUG_INFORMATION_FORMAT':'dwarf' if name=='Debug' else 'dwarf-with-dsym'})
             if name=='Debug': s['SWIFT_ACTIVE_COMPILATION_CONDITIONS']='DEBUG'
+        if prefix=='target' and name=='Release':
+            s.update({'CODE_SIGN_STYLE':'Manual','CODE_SIGN_IDENTITY':'Apple Distribution','PROVISIONING_PROFILE_SPECIFIER':'Spain Trip App Store Distribution'})
         fields = {'buildSettings':s,'name':name}
         if prefix in ['target', 'tests']: fields['baseConfigurationReference'] = signing
         ids.append(add(prefix+name,'XCBuildConfiguration',**fields))
@@ -72,7 +74,7 @@ target=add('target','PBXNativeTarget',buildConfigurationList=configs('target',ta
 testSources = add('testSources','PBXSourcesBuildPhase',buildActionMask=2147483647,files=[add('testBuild','PBXBuildFile',fileRef=testSource)],runOnlyForDeploymentPostprocessing=0)
 proxy = add('testProxy','PBXContainerItemProxy',containerPortal=uid('project'),proxyType=1,remoteGlobalIDString=target,remoteInfo='Mural')
 dependency=add('testDependency','PBXTargetDependency',target=target,targetProxy=proxy)
-testTarget=add('testTarget','PBXNativeTarget',buildConfigurationList=configs('tests',{'PRODUCT_BUNDLE_IDENTIFIER':'chat.mural.ios.uitests','PRODUCT_NAME':'$(TARGET_NAME)','GENERATE_INFOPLIST_FILE':'YES','TEST_TARGET_NAME':'Mural','TARGETED_DEVICE_FAMILY':'1','CODE_SIGN_STYLE':'Automatic','DEVELOPMENT_TEAM':'8PZYNMS6FH'}),buildPhases=[testSources],buildRules=[],dependencies=[dependency],name='MuralUITests',productName='MuralUITests',productReference=testProduct,productType='com.apple.product-type.bundle.ui-testing')
+testTarget=add('testTarget','PBXNativeTarget',buildConfigurationList=configs('tests',{'PRODUCT_BUNDLE_IDENTIFIER':'com.awall25.spaintrip.uitests','PRODUCT_NAME':'$(TARGET_NAME)','GENERATE_INFOPLIST_FILE':'YES','TEST_TARGET_NAME':'Mural','TARGETED_DEVICE_FAMILY':'1','CODE_SIGN_STYLE':'Automatic','DEVELOPMENT_TEAM':'L484ETZTGA'}),buildPhases=[testSources],buildRules=[],dependencies=[dependency],name='MuralUITests',productName='MuralUITests',productReference=testProduct,productType='com.apple.product-type.bundle.ui-testing')
 project=add('project','PBXProject',attributes={'BuildIndependentTargetsInParallel':'YES','LastUpgradeCheck':'2640','TargetAttributes':{target:{'CreatedOnToolsVersion':'26.4'},testTarget:{'CreatedOnToolsVersion':'26.4','TestTargetID':target}}},buildConfigurationList=configs('project',common),compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','nb','Base'],mainGroup=group,packageReferences=[corePackage,rtcPackage],productRefGroup=products,projectDirPath='',projectRoot='',targets=[target,testTarget])
 folder=root/'Mural.xcodeproj';folder.mkdir(exist_ok=True)
 folder.joinpath('project.pbxproj').write_text('// !$*UTF8*$!\n'+encode({'archiveVersion':1,'classes':{},'objectVersion':60,'objects':objects,'rootObject':project})+'\n')
