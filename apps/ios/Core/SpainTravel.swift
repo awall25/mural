@@ -75,7 +75,11 @@ public struct TravelTurn: Codable, Identifiable, Equatable, Sendable {
     public let english: String
     public let feedback: String
     public let complete: Bool
-    public init(id: UUID = UUID(), user: String, spanish: String, english: String, feedback: String, complete: Bool) {
+    public let taskID: String?
+    public let outcome: TravelTaskOutcome?
+    public let usedHint: Bool?
+    public init(id: UUID = UUID(), user: String, spanish: String, english: String, feedback: String, complete: Bool, taskID: String? = nil, outcome: TravelTaskOutcome? = nil, usedHint: Bool? = nil) {
+        self.taskID = taskID; self.outcome = outcome; self.usedHint = usedHint
         self.id = id; self.user = user; self.spanish = spanish; self.english = english; self.feedback = feedback; self.complete = complete
     }
 }
@@ -96,7 +100,7 @@ public struct TravelReply: Decodable, Sendable {
 
 public enum TravelPracticePolicy {
     public static let model = "gpt-4.1-mini"
-    public static let maximumTurns = 12
+    public static let maximumTurns = 24
     public static let maximumInputCharacters = 600
     public static func instructions(scenario: TravelScenario, rehearsal: Bool) -> String {
         """

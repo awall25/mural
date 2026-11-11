@@ -46,3 +46,17 @@ Build 3 archive/export passed and Apple marked it VALID. Final audio-session rev
 ## Build 4 — corrected microphone session
 
 Retains all build 3 speech/setup and Practice-label changes. Both recognizer paths now use recording-only measurement mode with no incompatible category options. Playback retains duckOthers only with the supported playback category. A standalone iOS Simulator runtime check accepted both audio-session configurations without activating the microphone or making provider calls. Signed build 4 archive/export and package verification passed. Apple processing is **VALID**. Build ID `857600b9-a4bd-4c99-81c5-d26b8bd27c55`, version **1.0 (4)**, app source commit `eb118af`. Assigned to Personal Testing. The owner should update to build 4 and retest model download and spoken Spanish on the iPhone; that physical-device result is still pending.
+
+
+## Build 5 — structured tasks and visible icon
+
+- Added 26 tasks across eight travel situations, explicit passing rubrics, mandatory feedback, same-task retries for missing details/off-topic replies, optional examples and assisted-pass markers.
+- The app controls ordered progression. Only a valid passing assessment for the current task unlocks Next task; completion requires all tasks. A task or completion flag from another step cannot skip forward. Reaching 24 attempts pauses rather than completes a session.
+- One GPT-4.1 mini request per Check reply: only current task criteria and latest reply, 300 output tokens maximum. No conversation history or audio is sent by the new assessment path. The static local dialogue and examples require no AI requests.
+- Existing conversations decode and remain in Progress. Earlier free-chat completion flags do not count as structured task passes. The history-preservation UI test passed.
+- Confirmed the old PNG was black. Replaced the AppKit bitmap renderer with opaque sRGB CoreGraphics output, inspected the artwork, and verified the actual installed Home Screen icon. Source is 1024×1024 with no alpha. IPA verification now rejects blank packaged icon artwork.
+- Core validation: 202 existing XCTest cases and 11 travel/lesson Swift Testing cases passed. These cover ordered progression, retries/help/off-topic results, wrong-task and malformed assessment rejection, input bounds, legacy-turn decoding, speech segment retention and curriculum completeness.
+- Eight distinct UI cases passed across the initial run and targeted reruns: offline launch/scenario selection, phrase search, empty progress, consent/key gate, help/hint handling, off-topic/incomplete retry, ordered full completion, and preserving earlier history. The initial retry-editing test had an accessibility type-selection issue; the selector was corrected and retry editing gained a Clear reply control. The affected retry/completion flows passed on rerun.
+- UI assessment fixtures use injected scripted responses in Debug only; no paid calls or real keys. They verify app gating and rendering, not model semantic accuracy. The production task assessor's judgment quality still needs owner testing with the saved API key.
+- 91 Python tests, generated Android content check and cross-platform contract check passed. No backend deployment needed; only the iOS personal fork is changed.
+- Signed archive/export, package verification and Apple processing/distribution: pending final release checks.

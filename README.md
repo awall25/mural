@@ -5,9 +5,10 @@ A Spanish-from-Spain travel refresher for restaurants, cafés, hotels, taxis, tr
 ## This fork
 
 - **Economical push-to-talk:** tap to record, tap to finish, review the transcript, then Send. Spanish speech recognition stays on the phone. The current Apple SpeechAnalyzer engine downloads its Spanish model on first use; installed on-device dictation is retained as a compatibility fallback. Unsupported devices offer typing instead of silently using cloud recognition.
-- **One text request per Send:** `gpt-4.1-mini`, 500 output tokens maximum, the latest six exchanges, 600-character user replies, 12 turns per scenario and 80 requests per local calendar day. No live sessions, automatic searches or separate translation requests.
+- **Structured practice:** 26 tasks across eight scenarios, with clear instructions, task-specific feedback, optional examples and retries. Only passing the current task unlocks Next task; every task must pass to complete a scenario.
+- **One text request per Check reply:** `gpt-4.1-mini`, 300 output tokens maximum, only the current task and latest 600-character reply, 24 attempts per scenario and 80 requests per local calendar day. Local dialogue and examples are bundled; no live sessions, automatic searches or separate translation requests.
 - **Offline phrasebook:** 39 bundled phrases with English meanings, normal/slower Spain Spanish device speech, search and saved phrases. Installed speech resources are required for playback.
-- **Practice and rehearsal:** optional English meanings, short corrections during practice, feedback at goal completion during rehearsal.
+- **Practice and rehearsal:** task feedback after every attempt, optional English meanings and hints. Rehearsal begins with meanings hidden; passing with an example is marked as assisted.
 - **Local progress:** the latest 24 conversations and completed-situation markers. No proficiency certification or pronunciation scoring.
 - **Personal key:** enter it only in the app Settings; it stays in Keychain. Consent is required before text is sent to OpenAI. No Mural account, purchases or backend deployment is needed.
 

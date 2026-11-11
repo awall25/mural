@@ -17,7 +17,7 @@ struct SpainTravelTests {
         for draft in ["   ", String(repeating: "x", count: 601)] {
             #expect(throws: TravelPracticePolicy.InputError.self) { try TravelPracticePolicy.input(scenario: scenario, turns: [], draft: draft) }
         }
-        let turns = (0..<12).map { _ in TravelTurn(user: "Hola", spanish: "Hola", english: "Hi", feedback: "", complete: false) }
+        let turns = (0..<TravelPracticePolicy.maximumTurns).map { _ in TravelTurn(user: "Hola", spanish: "Hola", english: "Hi", feedback: "", complete: false) }
         #expect(throws: TravelPracticePolicy.InputError.self) { try TravelPracticePolicy.input(scenario: scenario, turns: turns, draft: "Hola") }
     }
     @Test func invalidAndOversizedProviderRepliesAreRejected() throws {

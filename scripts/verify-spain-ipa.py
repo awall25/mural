@@ -34,4 +34,7 @@ with tempfile.TemporaryDirectory(prefix="spain-ipa-") as folder:
     assert signed["application-identifier"] == "L484ETZTGA.com.awall25.spaintrip"
     assert not signed.get("get-task-allow", False)
     assert "com.apple.developer.applesignin" not in signed
+    icon = app / "AppIcon60x60@2x.png"
+    assert icon.is_file(), "Packaged app icon is missing"
+    subprocess.run(["swift", str(Path(__file__).with_name("verify_spain_icon.swift")), str(icon)], check=True)
     print("Verified Spain Trip 1.0 (%s): signature, identity, permissions, iPhone support and disabled hosted features." % sys.argv[2])
