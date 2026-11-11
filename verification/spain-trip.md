@@ -14,7 +14,7 @@
 - App record: Spain Trip Practice (6833642049).
 - Internal group: Personal Testing.
 - Build 1 uploaded but failed validation with 90683 (missing purpose string). Restored the camera purpose declaration required by the retained upstream WebRTC binary. Spain travel does not invoke camera capture or request camera permission.
-- Build 2: archive passed; export/upload and processing status recorded below when complete.
+- Build 2: signed archive/export and IPA verification passed. Apple processing state **VALID**; internal build state **IN_BETA_TESTING**. Build ID `64463451-2afe-4a9d-ba8b-6e2d15f1c847`; verified in Personal Testing group. Invitation sent to the owner only. Expires **February 9, 2027**. App source commit: `e3bf0a8`.
 
 ## Scoped privacy preflight
 

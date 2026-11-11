@@ -56,6 +56,10 @@ asc publish testflight --app 6833642049 --ipa .asc/export/Mural.ipa \
 
 Increment `CURRENT_PROJECT_VERSION` in the generator before subsequent uploads and regenerate the project. Use a fresh archive/export directory per release. The package verification script checks signature, bundle, version/build, permissions (including the camera purpose declaration required by the retained WebRTC binary), device family, disabled hosted settings and distribution entitlements. No push entitlement is needed for this app.
 
+## Current release
+
+**1.0 (2)** is valid and in internal beta testing as of November 11, 2026. Build ID `64463451-2afe-4a9d-ba8b-6e2d15f1c847`; assigned to Personal Testing. The owner installation invitation was sent. Expiry: February 9, 2027. Source commit: `e3bf0a8`. Build 1 failed purpose-string validation; build 2 corrected it.
+
 ## First iPhone check
 
 1. Install Spain Trip in TestFlight. Phrasebook should open without a key or internet.
