@@ -40,4 +40,9 @@ Build 3 prefers `SpeechAnalyzer` with `SpeechTranscriber` and uses `AssetInvento
 
 Validation: 202 existing core tests and 5 travel tests passed. All 4 native UI tests passed; the offline-launch/hotel-selection test was rerun with an explicit assertion for the **Practice** menu label and passed. Simulator compilation passed. No paid API calls were made. Real Spanish model installation and spoken recognition on the owner's phone still require retesting after updating. No backend changes or deployment needed.
 
-Build 3 archive/export and Apple processing status: pending final release verification.
+Build 3 archive/export passed and Apple marked it VALID. Final audio-session review found that the recording-only category inherited an incompatible duckOthers option. Build 3 was removed from the Personal Testing group before recommending installation; build 4 replaces it.
+
+
+## Build 4 — corrected microphone session
+
+Retains all build 3 speech/setup and Practice-label changes. Both recognizer paths now use recording-only measurement mode with no incompatible category options. Playback retains duckOthers only with the supported playback category. A standalone iOS Simulator runtime check accepted both audio-session configurations without activating the microphone or making provider calls. Signed build 4 archive/export and package verification passed. Apple processing/distribution status will be recorded after completion.

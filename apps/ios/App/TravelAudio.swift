@@ -88,7 +88,7 @@ import MuralCore
         guard token == ticket else { return }
         preparationMessage = "Starting Spanish speech…"
         let audio = AVAudioSession.sharedInstance()
-        try audio.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try audio.setCategory(.record, mode: .measurement)
         try audio.setActive(true); sessionActive = true
         let natural = engine.inputNode.outputFormat(forBus: 0)
         guard natural.sampleRate > 0, natural.channelCount > 0,
@@ -140,7 +140,7 @@ import MuralCore
         // hardware/model-installation test. The request itself enforces local recognition.
         legacyRecognizer = recognizer
         let audio = AVAudioSession.sharedInstance()
-        try audio.setCategory(.record, mode: .measurement, options: .duckOthers)
+        try audio.setCategory(.record, mode: .measurement)
         try audio.setActive(true); sessionActive = true
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.requiresOnDeviceRecognition = true; request.shouldReportPartialResults = true
