@@ -121,3 +121,15 @@ public enum TravelPracticePolicy {
     }
     public enum InputError: Error { case limit }
 }
+
+/// SpeechAnalyzer revises the current segment, then commits it before emitting the next.
+public struct TravelSpeechTranscript: Sendable {
+    private var committed = ""
+    public private(set) var text = ""
+    public init() {}
+    public mutating func receive(_ segment: String, isFinal: Bool) {
+        let segment = segment.trimmingCharacters(in: .whitespacesAndNewlines)
+        text = [committed, segment].filter { !$0.isEmpty }.joined(separator: " ")
+        if isFinal { committed = text }
+    }
+}

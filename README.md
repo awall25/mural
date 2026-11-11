@@ -4,7 +4,7 @@ A Spanish-from-Spain travel refresher for restaurants, cafés, hotels, taxis, tr
 
 ## This fork
 
-- **Economical push-to-talk:** tap to record, tap to finish, review the transcript, then Send. Spanish speech recognition stays on the phone; unsupported devices offer typing instead of silently using cloud recognition.
+- **Economical push-to-talk:** tap to record, tap to finish, review the transcript, then Send. Spanish speech recognition stays on the phone. The current Apple SpeechAnalyzer engine downloads its Spanish model on first use; installed on-device dictation is retained as a compatibility fallback. Unsupported devices offer typing instead of silently using cloud recognition.
 - **One text request per Send:** `gpt-4.1-mini`, 500 output tokens maximum, the latest six exchanges, 600-character user replies, 12 turns per scenario and 80 requests per local calendar day. No live sessions, automatic searches or separate translation requests.
 - **Offline phrasebook:** 39 bundled phrases with English meanings, normal/slower Spain Spanish device speech, search and saved phrases. Installed speech resources are required for playback.
 - **Practice and rehearsal:** optional English meanings, short corrections during practice, feedback at goal completion during rehearsal.

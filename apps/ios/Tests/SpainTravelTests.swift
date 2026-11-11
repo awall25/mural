@@ -30,6 +30,17 @@ struct SpainTravelTests {
         #expect(reply.spanish == "¿Qué te pongo?")
         #expect(!reply.complete)
     }
+    @Test func speechSegmentsReplaceInterimTextAndKeepCommittedWords() {
+        var transcript = TravelSpeechTranscript()
+        transcript.receive("Una mesa", isFinal: false)
+        transcript.receive("Una mesa para dos.", isFinal: true)
+        transcript.receive("En la", isFinal: false)
+        #expect(transcript.text == "Una mesa para dos. En la")
+        transcript.receive("En la terraza, por favor.", isFinal: true)
+        #expect(transcript.text == "Una mesa para dos. En la terraza, por favor.")
+        transcript.receive("  ", isFinal: false)
+        #expect(transcript.text == "Una mesa para dos. En la terraza, por favor.")
+    }
     @Test func travelContentIncludesRepairAndEveryRequestedSetting() {
         let ids = Set(TravelScenario.all.map(\.id))
         #expect(ids.count == TravelScenario.all.count)

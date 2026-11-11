@@ -10,6 +10,7 @@ final class TravelUITests: XCTestCase {
     @MainActor func testOfflineLaunchAndScenarioSelection() {
         let app = launch()
         XCTAssertTrue(app.staticTexts["A table & a meal"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.tabBars.buttons["Practice"].exists)
         app.tabBars.buttons["Situations"].tap()
         let hotel = app.buttons["scenario-hotel"]
         XCTAssertTrue(hotel.waitForExistence(timeout: 3))

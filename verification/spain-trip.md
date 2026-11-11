@@ -30,3 +30,14 @@
 Spanish recognition availability/accuracy, microphone permissions, headphones/speaker, normal and slower Spanish voice playback, background/interruption behavior, and a real model conversation require the owner's iPhone and API key. Offline UI tests make no provider calls. Recognition availability is checked at runtime; typing remains available if unsupported. Model output quality and task-completion decisions are not established by transport/schema tests.
 
 No backend deployment is needed: the new entry point uses local speech and the user's direct OpenAI API key. Money Bot files were read/copied as permitted, and were not modified.
+
+
+## Build 3 — Spanish recognition setup fix
+
+Reported on the owner's iPhone 18 Pro running iOS 27.2. Build 2 combined legacy `supportsOnDeviceRecognition` and service `isAvailable` in one gate, did not install Spanish recognition assets, and could cancel preparation when a permission prompt made the app inactive. This did not establish a hardware limitation.
+
+Build 3 prefers `SpeechAnalyzer` with `SpeechTranscriber` and uses `AssetInventory` to install the equivalent Spain Spanish model. Download/startup progress and cancellation are visible. It converts microphone buffers to the compatible format, retains committed transcript segments while replacing interim text, and finalizes input before enabling edits/Send. Legacy on-device recognition remains only as a compatibility fallback, without the old service-availability gate. Backgrounding still cancels speech; permission prompts no longer cancel preparation. Menu label changed to **Practice**.
+
+Validation: 202 existing core tests and 5 travel tests passed. All 4 native UI tests passed; the offline-launch/hotel-selection test was rerun with an explicit assertion for the **Practice** menu label and passed. Simulator compilation passed. No paid API calls were made. Real Spanish model installation and spoken recognition on the owner's phone still require retesting after updating. No backend changes or deployment needed.
+
+Build 3 archive/export and Apple processing status: pending final release verification.

@@ -19,7 +19,7 @@ struct SpainRootView: View {
     }
     var body: some View {
         TabView(selection: $tab) {
-            Tab("Practise", systemImage: "mic", value: 0) {
+            Tab("Practice", systemImage: "mic", value: 0) {
                 NavigationStack { TravelTalkView(practice: practice, audio: audio, rehearsal: rehearsal, meanings: $meanings) }
             }
             Tab("Situations", systemImage: "map", value: 1) {
@@ -61,7 +61,8 @@ struct SpainRootView: View {
         .tint(MuralColor.ink)
         .sheet(isPresented: $practice.showSettings) { TravelSettings(practice: practice, audio: audio) }
         .onChange(of: tab) { _, _ in audio.silence() }
-        .onChange(of: scenePhase) { _, phase in if phase != .active { audio.silence(); practice.cancel() } }
+        .onChange(of: scenePhase) { _, phase in if phase == .background { audio.silence(); practice.cancel() }
+            else if phase == .inactive && audio.listening { audio.silence() } }
     }
 }
 
@@ -134,26 +135,30 @@ private struct TravelTalkView: View {
             Toggle("Show English meanings", isOn: $meanings).font(.subheadline)
             TextField("Say it in Spanish, or type here", text: $practice.draft, axis: .vertical)
                 .lineLimit(2...5).padding(16).background(.white, in: RoundedRectangle(cornerRadius: 16))
-                .focused($typing).disabled(practice.busy || audio.listening || audio.preparing).accessibilityIdentifier("travel-reply")
+                .focused($typing).disabled(practice.busy || audio.listening || audio.preparing || audio.finishing).accessibilityIdentifier("travel-reply")
                 .onChange(of: practice.draft) { _, value in if value.count > 600 { practice.draft = String(value.prefix(600)) } }
             HStack(spacing: 12) {
                 Button {
                     typing = false
-                    if audio.listening { audio.stop() }
+                    if audio.listening { audio.finishRecording() }
+                    else if audio.preparing || audio.finishing { audio.stop() }
                     else { Task { await audio.start() } }
                 } label: {
-                    Label(audio.preparing ? "Preparing…" : audio.listening ? "Finish recording" : "Tap to talk", systemImage: audio.listening ? "stop.fill" : "mic")
+                    Label(audio.preparing || audio.finishing ? "Cancel" : audio.listening ? "Finish recording" : "Tap to talk", systemImage: audio.listening ? "stop.fill" : "mic")
                         .frame(maxWidth: .infinity, minHeight: 44)
-                }.buttonStyle(.bordered).disabled(practice.busy || audio.preparing).accessibilityIdentifier("travel-record")
+                }.buttonStyle(.bordered).disabled(practice.busy).accessibilityIdentifier("travel-record")
                 Button {
                     typing = false; audio.silence(); practice.send(rehearsal: rehearsal)
                 } label: {
                     Label("Send", systemImage: "arrow.up").frame(minHeight: 44)
                 }.buttonStyle(.borderedProminent).tint(MuralColor.orange).foregroundStyle(MuralColor.ink)
-                    .disabled(practice.busy || audio.listening || audio.preparing || practice.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(practice.busy || audio.listening || audio.preparing || audio.finishing || practice.draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     .accessibilityIdentifier("travel-send")
             }
-            Text(audio.listening ? "Listening on this phone. Tap Finish recording when you're done (30 seconds maximum)." : "Record a short reply, review the words, then send. Only reviewed text goes to OpenAI.")
+            if audio.preparing || audio.finishing {
+                ProgressView(audio.preparationMessage).font(.footnote).accessibilityIdentifier("speech-preparation")
+            }
+            Text(audio.listening ? "Listening on this phone. Tap Finish recording when you're done (30 seconds maximum)." : "Record a short reply, review the words, then send. Only reviewed text goes to OpenAI. First use may download Spanish speech from Apple.")
                 .font(.footnote).foregroundStyle(.secondary)
         }
     }
@@ -161,7 +166,7 @@ private struct TravelTalkView: View {
         HStack(spacing: 20) {
             Button("Listen", systemImage: "speaker.wave.2") { typing = false; audio.speak(text) }
             Button("Slower", systemImage: "tortoise") { typing = false; audio.speak(text, slow: true) }
-        }.font(.subheadline).buttonStyle(.borderless).disabled(practice.busy || audio.listening || audio.preparing)
+        }.font(.subheadline).buttonStyle(.borderless).disabled(practice.busy || audio.listening || audio.preparing || audio.finishing)
     }
     private func restart() { audio.silence(); practice.select(practice.scenario, rehearsal: rehearsal); meanings = !rehearsal }
 }
